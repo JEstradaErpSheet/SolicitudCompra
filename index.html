@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>Solicitud de Compra</title>  
+    <style>  
+        @page {  
+            size: 8.5in 11in; /* Tamaño carta */  
+            margin: 0mm; /* Margen */  
+        }  
+        body {  
+            font-family: Arial, sans-serif;  
+            line-height: 1.3;  
+            background-color: #ffffff;  
+            color: #333;  
+            padding: 35px;         
+            margin: 0;  
+            width: 100%;  
+            height: 100%;
+            box-sizing: border-box; 
+        }  
+        header {  
+            text-align: center;  
+            margin-bottom: 20px;    
+        }  
+        h1 {  
+            font-size: 16px;  
+            color: #2c3e50;  
+            text-align: end;
+            margin: 0em 0em 0.2em 0em;
+        }  
+        h2 {  
+            font-size: 28px;  
+            color: #34495e;  
+            margin: 1em 0em 1em 0em;
+            text-align: center;
+        }    
+        
+        .logo {  
+            width: 200px;  
+            height: 120px; 
+            float: left;
+            margin: -2em 0em 0em -2em;
+        }  
+        p {  
+            margin: 0em 0em 0em 0em;           
+        }
+        
+        span {
+           text-align: justifid;
+           margin: auto;
+           text-decoration: underline;
+        } 
+        
+        table{  
+            width: 100%;
+            text-align: start;
+            margin-top: 10px;
+            border-collapse: collapse;
+        }  
+                
+        table th {  
+            width: 30%;
+            border: 1px solid #fff;  
+            padding: 1px;  
+            text-align: start;
+        } 
+        
+        table td {  
+            border: 1px solid #fff;  
+            padding: 1px;  
+            text-align: start;
+        }
+            
+        table#DetalleProductos {  
+            width: 100%;  
+            border-collapse: collapse;  
+            background-color: #fff;  
+            margin-top: 1px;          
+         } 
+        
+        table#DetalleProductos th {  
+            background-color: #3498db;  
+            color: white;  
+            font-weight: bold; 
+            text-align: center;
+            border: 2px solid #ddd;  
+            padding: 2px;            
+        }
+ 
+       table#DetalleProductos td {  
+            border: 2px solid #ddd;
+            color: black;  
+            padding: 1px;
+            margin: 0em 0em 0em 0em;
+        }             
+        
+        .footer {  
+            width: 100%;
+            position: fixed;
+            bottom: 0;
+            height: 80px;
+            font-size: auto;  
+            color: #777;    
+            align-content: center;
+        }  
+        .highlight {  
+            background-color: #ecf0f1;  
+        }  
+        
+    </style>  
+</head>  
+<body>  
+
+    <header>  
+        <div id="logotipo"></div>
+        <h1><strong id="empresa"></strong></h1>  
+        <h1><em id="eslogan"></em></h1>  
+    </header>
+
+    <br>
+    <h2>SOLICITUD DE COMPRA</h2>  
+
+    <p align="right"><strong>FECHA:</strong> <u id="fecha"></u></p>  
+
+    <table>
+        <tr>
+            <th><strong>SOLICITUD No:</strong></th>
+            <td><u id="solicitudCompra"></u></td>
+        </tr>  
+        <tr>
+            <th><strong>ÁREA O PROYECTO:</strong></th>
+            <td><u id="area"></u></td> 
+        </tr>    
+        <tr>
+            <th><strong>SOLICITANTE:</strong></th>
+            <td><u id="solicitante"></u></td>
+        </tr>  
+        <tr>
+            <th><strong>OBSERVACIONES:</strong></th>
+            <td><u id="observaciones"></u></td>
+        </tr>  
+    </table>
+
+    <br>
+    <p align="left"><strong>DETALLE DE PRODUCTO O SERVICIO SOLICITADO:</strong></p>
+
+    <table id="DetalleProductos">  
+        <thead>  
+            <tr>  
+                <th style="width:50%">DESCRIPCIÓN DE PRODUCTOS O SERVICIOS</th>  
+                <th style="width:25%">UNIDAD DE MEDIDA</th>  
+                <th style="width:25%">CANTIDAD</th>  
+            </tr>  
+        </thead>  
+        <tbody id="detalleDeSolicitud">  
+        </tbody>       
+    </table>  
+
+    <div class="footer">
+        Solicitado por:__________________________  
+        Autorizado por:__________________________  
+    </div>  
+
+    <script>
+      // Función para obtener parámetros de la URL
+      function getParam(name) {
+        return new URLSearchParams(window.location.search).get(name);
+      }
+
+      // Función para establecer texto en un elemento
+      function setText(id, value) {
+        const element = document.getElementById(id);
+        if (element && value) {
+          element.textContent = decodeURIComponent(value.replace(/\+/g, " "));
+        }
+      }
+
+      // Función para establecer HTML en un elemento
+      function setHTML(id, value) {
+        const element = document.getElementById(id);
+        if (element && value) {
+          element.innerHTML = decodeURIComponent(value.replace(/\+/g, " "));
+        }
+      }
+
+      // Establecer valores desde la URL
+      setText("fecha", getParam("fecha"));
+      setText("solicitudCompra", getParam("solicitudCompra"));
+      setText("area", getParam("area"));
+      setText("solicitante", getParam("solicitante"));
+      setText("observaciones", getParam("observaciones"));
+
+      // Logo
+      const logoUrl = getParam("logotipo");
+      if (logoUrl) {
+        document.getElementById("logotipo").innerHTML = decodeURIComponent(logoUrl.replace(/\+/g, " "));
+      }
+
+      // Empresa y eslogan
+      setText("empresa", getParam("empresa"));
+      setText("eslogan", getParam("eslogan"));
+
+      // Detalle de solicitud
+      setHTML("detalleDeSolicitud", getParam("detalleDeSolicitud"));
+
+      // Imprimir automáticamente
+      window.onload = function(){
+        window.print();
+      };
+    </script>  
+
+</body>  
+</html>
